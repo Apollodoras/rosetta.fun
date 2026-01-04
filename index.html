@@ -26,6 +26,7 @@
                 <li><a href="#method">Method</a></li>
                 <li><a href="#software">Software</a></li>
                 <li><a href="#hardware">Hardware</a></li>
+                <li><a href="#search">Find Music</a></li>
                 <li><a href="manifesto.html">Manifesto</a></li>
             </ul>
         </nav>
@@ -169,31 +170,67 @@
             </div>
 
             <div class="search-container">
-                <div class="search-bar-wrap">
-                    <input type="text" id="search-input" placeholder="Search by song, composer, or genre..."
-                        autocomplete="off">
-                    <div id="autocomplete-results" class="autocomplete-list"></div>
-                </div>
-
-                <div class="search-filters">
-                    <div class="filter-group">
-                        <label>Difficulty:</label>
-                        <div class="filter-options">
-                            <button class="filter-btn" data-type="difficulty" data-value="beginner">Beginner</button>
-                            <button class="filter-btn" data-type="difficulty"
-                                data-value="intermediate">Intermediate</button>
-                            <button class="filter-btn" data-type="difficulty" data-value="advanced">Advanced</button>
+                <div class="search-layout">
+                    <!-- Sidebar Filters -->
+                    <aside class="search-sidebar">
+                        <div class="filter-section">
+                            <h4>Difficulty</h4>
+                            <div class="filter-options-stack">
+                                <button class="filter-btn" data-type="difficulty"
+                                    data-value="beginner">Beginner</button>
+                                <button class="filter-btn" data-type="difficulty"
+                                    data-value="intermediate">Intermediate</button>
+                                <button class="filter-btn" data-type="difficulty"
+                                    data-value="advanced">Advanced</button>
+                                <button class="filter-btn" data-type="difficulty" data-value="expert">Expert</button>
+                            </div>
                         </div>
+
+                        <div class="filter-section">
+                            <h4>Genre</h4>
+                            <div class="filter-options-cloud">
+                                <button class="filter-btn" data-type="genre" data-value="classical">Classical</button>
+                                <button class="filter-btn" data-type="genre" data-value="jazz">Jazz</button>
+                                <button class="filter-btn" data-type="genre" data-value="pop">Pop</button>
+                                <button class="filter-btn" data-type="genre" data-value="rock">Rock</button>
+                                <button class="filter-btn" data-type="genre" data-value="folk">Folk</button>
+                                <button class="filter-btn" data-type="genre" data-value="game">Game</button>
+                                <button class="filter-btn" data-type="genre" data-value="movie">Movie</button>
+                                <button class="filter-btn" data-type="genre" data-value="hymn">Hymn</button>
+                                <button class="filter-btn" data-type="genre" data-value="other">Other</button>
+                            </div>
+                        </div>
+
+                        <div class="filter-section">
+                            <h4>Period</h4>
+                            <div class="filter-options-stack">
+                                <button class="filter-btn" data-type="period" data-value="baroque">Baroque</button>
+                                <button class="filter-btn" data-type="period" data-value="classical">Classical</button>
+                                <button class="filter-btn" data-type="period" data-value="romantic">Romantic</button>
+                                <button class="filter-btn" data-type="period" data-value="modern">Modern</button>
+                                <button class="filter-btn" data-type="period"
+                                    data-value="contemporary">Contemporary</button>
+                            </div>
+                        </div>
+                    </aside>
+
+                    <!-- Main Search Area -->
+                    <div class="search-main">
+                        <div class="search-bar-wrap">
+                            <input type="text" id="search-input" placeholder="Search by song, composer, or tag..."
+                                autocomplete="off">
+                            <div id="autocomplete-results" class="autocomplete-list"></div>
+                        </div>
+
+                        <div id="search-results" class="search-results-grid">
+                            <!-- Results will be injected here -->
+                        </div>
+
+                        <div id="search-loading" class="search-status" style="display: none;">Searching the neural
+                            archives...</div>
+                        <div id="search-empty" class="search-status" style="display: none;">No results found in this
+                            sector.</div>
                     </div>
-                </div>
-
-                <div id="search-results" class="search-results-grid">
-                    <!-- Results will be injected here -->
-                </div>
-
-                <div id="search-loading" class="search-status" style="display: none;">Searching the neural archives...
-                </div>
-                <div id="search-empty" class="search-status" style="display: none;">No results found in this sector.
                 </div>
             </div>
         </div>
@@ -303,10 +340,20 @@
 
         let activeFilters = {
             difficulty: [],
-            genre: []
+            genre: [],
+            period: []
         };
 
         let searchTimeout;
+
+        // Enter key support
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                clearTimeout(searchTimeout);
+                autocompleteBox.style.display = 'none';
+                performSearch(searchInput.value);
+            }
+        });
 
         searchInput.addEventListener('input', (e) => {
             clearTimeout(searchTimeout);
@@ -319,8 +366,10 @@
 
             searchTimeout = setTimeout(() => {
                 fetchAutocomplete(query);
+                // Optional: Live search as they type, or wait for Enter?
+                // For now, let's keep live search but with debounce
                 performSearch(query);
-            }, 400);
+            }, 500);
         });
 
         async function fetchAutocomplete(query) {
@@ -374,7 +423,10 @@
                 let url = `${API_BASE}/search?limit=12`;
                 if (query) url += `&query=${encodeURIComponent(query)}`;
 
+                // Append all active filters to the URL
                 activeFilters.difficulty.forEach(d => url += `&difficulty=${d}`);
+                activeFilters.genre.forEach(g => url += `&genre=${g}`);
+                activeFilters.period.forEach(p => url += `&period=${p}`);
 
                 const res = await fetch(url);
                 const data = await res.json();
@@ -382,6 +434,8 @@
                 renderResults(data);
             } catch (err) {
                 console.error(err);
+                loadingIndicator.style.display = 'none';
+                resultsContainer.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--text-tertiary);">Error connecting to neural archives.</div>';
             } finally {
                 loadingIndicator.style.display = 'none';
             }
@@ -403,7 +457,7 @@
                         <p>${file.composer}</p>
                         <div class="result-meta">
                             ${file.difficulty ? `<span class="tag ${diffClass}">${file.difficulty}</span>` : ''}
-                            <span class="tag genre">${file.genre || 'Piano'}</span>
+                            ${file.genre ? `<span class="tag genre">${file.genre}</span>` : ''}
                         </div>
                     </div>
                     <div class="result-actions">
