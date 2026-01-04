@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+sqlmodel
+aiohttp
+beautifulsoup4
+python-multipart
