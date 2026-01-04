@@ -2,8 +2,8 @@ from fastapi import FastAPI, Depends, Query, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import Session, select
 from typing import List, Optional
-from .database import create_db_and_tables, get_session
-from .models import MIDIFile, MIDIFileRead, Tag, Genre, Difficulty, Period
+from database import create_db_and_tables, get_session
+from models import MIDIFile, MIDIFileRead, Tag, Genre, Difficulty, Period
 import uvicorn
 from contextlib import asynccontextmanager
 from difflib import SequenceMatcher

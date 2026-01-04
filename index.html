@@ -159,6 +159,46 @@
         </div>
     </section>
 
+    <!-- Find Music Section -->
+    <section id="search" class="reveal">
+        <div class="bg-blob blob-2" style="left: -100px; top: 0; opacity: 0.2;"></div>
+        <div class="section-glass-wrap">
+            <div class="section-header">
+                <h2>Find Music</h2>
+                <p>Search thousands of high-quality MIDI and MusicXML files for your practice.</p>
+            </div>
+
+            <div class="search-container">
+                <div class="search-bar-wrap">
+                    <input type="text" id="search-input" placeholder="Search by song, composer, or genre..."
+                        autocomplete="off">
+                    <div id="autocomplete-results" class="autocomplete-list"></div>
+                </div>
+
+                <div class="search-filters">
+                    <div class="filter-group">
+                        <label>Difficulty:</label>
+                        <div class="filter-options">
+                            <button class="filter-btn" data-type="difficulty" data-value="beginner">Beginner</button>
+                            <button class="filter-btn" data-type="difficulty"
+                                data-value="intermediate">Intermediate</button>
+                            <button class="filter-btn" data-type="difficulty" data-value="advanced">Advanced</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="search-results" class="search-results-grid">
+                    <!-- Results will be injected here -->
+                </div>
+
+                <div id="search-loading" class="search-status" style="display: none;">Searching the neural archives...
+                </div>
+                <div id="search-empty" class="search-status" style="display: none;">No results found in this sector.
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Community Section -->
     <section id="community">
         <div class="bg-blob blob-1" style="top: 20%; left: 50%; transform: translateX(-50%); opacity: 0.15;"></div>
@@ -251,6 +291,134 @@
         }, observerOptions);
 
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Search Engine Logic
+        const API_BASE = 'https://tahar-immouni--rosetta-midi-search-web-app.modal.run';
+        const searchInput = document.getElementById('search-input');
+        const resultsContainer = document.getElementById('search-results');
+        const loadingIndicator = document.getElementById('search-loading');
+        const emptyIndicator = document.getElementById('search-empty');
+        const autocompleteBox = document.getElementById('autocomplete-results');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+
+        let activeFilters = {
+            difficulty: [],
+            genre: []
+        };
+
+        let searchTimeout;
+
+        searchInput.addEventListener('input', (e) => {
+            clearTimeout(searchTimeout);
+            const query = e.target.value.trim();
+
+            if (query.length < 2) {
+                autocompleteBox.style.display = 'none';
+                return;
+            }
+
+            searchTimeout = setTimeout(() => {
+                fetchAutocomplete(query);
+                performSearch(query);
+            }, 400);
+        });
+
+        async function fetchAutocomplete(query) {
+            try {
+                const res = await fetch(`${API_BASE}/autocomplete?query=${encodeURIComponent(query)}`);
+                const data = await res.json();
+                renderAutocomplete(data);
+            } catch (err) { console.error(err); }
+        }
+
+        function renderAutocomplete(items) {
+            if (!items.length) {
+                autocompleteBox.style.display = 'none';
+                return;
+            }
+            autocompleteBox.innerHTML = items.map(item => `<div class="autocomplete-item">${item}</div>`).join('');
+            autocompleteBox.style.display = 'block';
+
+            document.querySelectorAll('.autocomplete-item').forEach(el => {
+                el.addEventListener('click', () => {
+                    searchInput.value = el.textContent;
+                    autocompleteBox.style.display = 'none';
+                    performSearch(el.textContent);
+                });
+            });
+        }
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const type = btn.dataset.type;
+                const value = btn.dataset.value;
+
+                btn.classList.toggle('active');
+
+                if (activeFilters[type].includes(value)) {
+                    activeFilters[type] = activeFilters[type].filter(v => v !== value);
+                } else {
+                    activeFilters[type].push(value);
+                }
+
+                performSearch(searchInput.value);
+            });
+        });
+
+        async function performSearch(query = "") {
+            loadingIndicator.style.display = 'block';
+            emptyIndicator.style.display = 'none';
+            resultsContainer.innerHTML = '';
+
+            try {
+                let url = `${API_BASE}/search?limit=12`;
+                if (query) url += `&query=${encodeURIComponent(query)}`;
+
+                activeFilters.difficulty.forEach(d => url += `&difficulty=${d}`);
+
+                const res = await fetch(url);
+                const data = await res.json();
+
+                renderResults(data);
+            } catch (err) {
+                console.error(err);
+            } finally {
+                loadingIndicator.style.display = 'none';
+            }
+        }
+
+        function renderResults(files) {
+            if (!files.length) {
+                emptyIndicator.style.display = 'block';
+                return;
+            }
+
+            resultsContainer.innerHTML = files.map(file => {
+                // Determine difficulty tag class
+                const diffClass = file.difficulty ? `difficulty-${file.difficulty.toLowerCase()}` : '';
+                return `
+                <div class="result-card">
+                    <div class="result-info">
+                        <h3>${file.title}</h3>
+                        <p>${file.composer}</p>
+                        <div class="result-meta">
+                            ${file.difficulty ? `<span class="tag ${diffClass}">${file.difficulty}</span>` : ''}
+                            <span class="tag genre">${file.genre || 'Piano'}</span>
+                        </div>
+                    </div>
+                    <div class="result-actions">
+                        <a href="${file.download_url}" target="_blank" class="download-btn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                            Download
+                        </a>
+                    </div>
+                </div>
+            `;
+            }).join('');
+        }
+
+        // Initial empty search to show featured
+        performSearch();
     </script>
 </body>
 

@@ -8,8 +8,8 @@ from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 import time
 from sqlmodel import Session, select
-from .database import engine, create_db_and_tables
-from .models import MIDIFile, Genre, Difficulty, Period #, Tag
+from database import engine, create_db_and_tables
+from models import MIDIFile, Genre, Difficulty, Period #, Tag
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

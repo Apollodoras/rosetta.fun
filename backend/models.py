@@ -46,18 +46,18 @@ class MIDIFileBase(SQLModel):
     file_hash: str = Field(unique=True, index=True)
     date_added: datetime = Field(default_factory=datetime.utcnow)
 
+class MIDIFileTagLink(SQLModel, table=True):
+    midi_file_id: Optional[int] = Field(default=None, foreign_key="midifile.id", primary_key=True)
+    tag_id: Optional[int] = Field(default=None, foreign_key="tag.id", primary_key=True)
+
 class MIDIFile(MIDIFileBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    tags: List["Tag"] = Relationship(back_populates="midi_files", link_model="MIDIFileTagLink")
+    tags: List["Tag"] = Relationship(back_populates="midi_files", link_model=MIDIFileTagLink)
 
 class Tag(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str = Field(unique=True, index=True)
-    midi_files: List[MIDIFile] = Relationship(back_populates="tags", link_model="MIDIFileTagLink")
-
-class MIDIFileTagLink(SQLModel, table=True):
-    midi_file_id: Optional[int] = Field(default=None, foreign_key="midifile.id", primary_key=True)
-    tag_id: Optional[int] = Field(default=None, foreign_key="tag.id", primary_key=True)
+    midi_files: List[MIDIFile] = Relationship(back_populates="tags", link_model=MIDIFileTagLink)
 
 class MIDIFileCreate(MIDIFileBase):
     tags: List[str] = []
