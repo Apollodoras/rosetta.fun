@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal - Rosetta</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <a href="index.html" class="logo">ROSETTA<span>.</span></a>
+        <a href="index.html" class="header-cta" style="text-decoration: none;">Back to Home</a>
+    </header>
+
+    <main class="document-container">
+        <nav class="tab-nav">
+            <button class="tab-btn active" onclick="showTab('privacy')">Privacy Policy</button>
+            <button class="tab-btn" onclick="showTab('terms')">Terms of Service</button>
+            <button class="tab-btn" onclick="showTab('refund')">Refund Policy</button>
+        </nav>
+
+        <!-- Privacy Policy -->
+        <article id="privacy" class="tab-content active doc-section">
+            <header class="section-header" style="text-align: left;">
+                <h2>Privacy Policy</h2>
+                <p>Last Updated: January 1, 2025</p>
+            </header>
+
+            <section>
+                <h2>1. Information We Collect</h2>
+                <p>We respect your privacy. We collect email addresses for updates and project news. When you donate or
+                    pre-order, payment information is processed securely by Stripe; we do not store full credit card
+                    details.</p>
+                <h3>Software Data</h3>
+                <p>Rosetta PNO may collect anonymous practice statistics to improve the method. We do NOT collect your
+                    MIDI
+                    input data or musical performances.</p>
+                <h2>2. How We Use Information</h2>
+                <p>Your data is used to provide services, process transactions, and communicate updates. We do not sell
+                    your
+                    personal information.</p>
+            </section>
+        </article>
+
+        <!-- Terms of Service -->
+        <article id="terms" class="tab-content doc-section">
+            <header class="section-header" style="text-align: left;">
+                <h2>Terms of Service</h2>
+                <p>Last Updated: January 1, 2025</p>
+            </header>
+
+            <section>
+                <h2>1. License</h2>
+                <p>Rosetta PNO is open-source software. You are free to use, modify, and distribute it in accordance
+                    with
+                    the project license.</p>
+                <h2>2. Conduct</h2>
+                <p>Users of Apollotopia must treat others with respect. We reserve the right to remove content that is
+                    offensive or illegal.</p>
+                <h2>3. Disclaimer</h2>
+                <p>Rosetta software is provided "as is" without warranty. Use at your own risk.</p>
+            </section>
+        </article>
+
+        <!-- Refund Policy -->
+        <article id="refund" class="tab-content doc-section">
+            <header class="section-header" style="text-align: left;">
+                <h2>Refund Policy</h2>
+                <p>Last Updated: January 1, 2025</p>
+            </header>
+
+            <section>
+                <h2>1. Software</h2>
+                <p>Rosetta PNO is free software. No refunds are applicable.</p>
+                <h2>2. Donations</h2>
+                <p>Voluntary support is non-refundable, as it fuels immediate R&D and server costs.</p>
+                <h2>3. Hardware Pre-orders</h2>
+                <p>Refundable deposits can be withdrawn at any time before shipping. Non-refundable promotional tiers
+                    are
+                    final except in cases of extreme manufacturing delays.</p>
+            </section>
+        </article>
+    </main>
+
+    <footer style="padding: 80px 5%; text-align: center; color: var(--text-tertiary);">
+        © 2025 Rosetta Project.
+    </footer>
+
+    <script>
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+
+</body>
+
+</html>

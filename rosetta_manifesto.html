@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Harmonic Living Manifesto - Rosetta</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0507;
+            --bg-secondary: #1a0a0f;
+            --accent: #b2225b;
+            --accent-light: #d94a7f;
+            --text: #f5f5f7;
+            --text-secondary: #a1a1a6;
+            --text-tertiary: #6e6e73;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text);
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 56px;
+            background: rgba(10,5,7,0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(178,34,91,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+            z-index: 1000;
+        }
+        
+        .logo {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--accent-light);
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+        
+        .back-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .back-link:hover {
+            color: var(--accent-light);
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 120px 5% 80px;
+        }
+        
+        .doc-header {
+            text-align: center;
+            margin-bottom: 80px;
+            padding-bottom: 40px;
+            border-bottom: 2px solid rgba(178,34,91,0.2);
+        }
+        
+        .doc-header h1 {
+            font-size: clamp(36px, 6vw, 56px);
+            font-weight: 900;
+            color: var(--accent-light);
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+        
+        .doc-header .subtitle {
+            font-size: 20px;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+        
+        .download-pdf {
+            display: inline-block;
+            margin-top: 24px;
+            padding: 12px 28px;
+            background: rgba(178,34,91,0.1);
+            border: 2px solid var(--accent-light);
+            border-radius: 30px;
+            color: var(--accent-light);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .download-pdf:hover {
+            background: var(--accent-light);
+            color: #000;
+        }
+        
+        .section {
+            margin-bottom: 60px;
+        }
+        
+        .section h2 {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--accent-light);
+            margin-bottom: 24px;
+            margin-top: 60px;
+        }
+        
+        .section h3 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 16px;
+            margin-top: 40px;
+        }
+        
+        .section p {
+            font-size: 17px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+        
+        .section ul {
+            list-style: none;
+            margin: 24px 0;
+        }
+        
+        .section ul li {
+            padding: 12px 0;
+            padding-left: 32px;
+            position: relative;
+            font-size: 17px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        
+        .section ul li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--accent-light);
+            font-weight: 700;
+            font-size: 24px;
+        }
+        
+        .highlight-box {
+            background: rgba(178,34,91,0.08);
+            border-left: 4px solid var(--accent-light);
+            padding: 24px 32px;
+            margin: 32px 0;
+            border-radius: 8px;
+        }
+        
+        .highlight-box p {
+            margin-bottom: 0;
+            font-size: 18px;
+            font-style: italic;
+        }
+        
+        .roadmap-list {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 32px;
+            border: 1px solid rgba(178,34,91,0.2);
+        }
+        
+        .roadmap-list ol {
+            list-style: none;
+            counter-reset: roadmap;
+        }
+        
+        .roadmap-list li {
+            counter-increment: roadmap;
+            padding: 16px 0;
+            padding-left: 60px;
+            position: relative;
+            font-size: 17px;
+            color: var(--text-secondary);
+            border-bottom: 1px solid rgba(178,34,91,0.1);
+        }
+        
+        .roadmap-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .roadmap-list li:before {
+            content: counter(roadmap);
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background: var(--accent-light);
+            color: #000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 18px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 60px 5%;
+            border-top: 1px solid rgba(178,34,91,0.2);
+            color: var(--text-tertiary);
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 100px 5% 60px;
+            }
+            
+            .section h2 {
+                font-size: 28px;
+            }
+            
+            .section h3 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">ROSETTA</a>
+        <a href="index.html" class="back-link">← Back to Home</a>
+    </header>
+
+    <div class="container">
+        <div class="doc-header">
+            <h1>The Harmonic Living Manifesto</h1>
+            <p class="subtitle">ROSETTA: A Technological and Philosophical Intervention</p>
+            <a href="#" class="download-pdf">Download PDF</a>
+        </div>
+
+        <div class="section">
+            <h2>1. The Core Vision</h2>
+            <p>The Rosetta Project is a technological and philosophical intervention designed to bridge the gap between human musical instinct and technical execution. We believe that music is a fundamental human right and a blueprint for harmonic living, yet it has been gated behind centuries of inefficient pedagogical "encoding."</p>
+            
+            <div class="highlight-box">
+                <p><strong>The Goal:</strong> To achieve "Instant Fluency" by bypassing the cognitive bottleneck of traditional notation and creating a direct link between visual stimuli and motor-memory execution.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>2. The Science: The Rosetta Method</h2>
+            <p>At the heart of our software is the Rosetta Method, which leverages Long-Term Potentiation (LTP) to create permanent neural pathways.</p>
+
+            <h3>The Cognitive Bottleneck (The Problem)</h3>
+            <p>Traditional music education follows a path of:</p>
+            <ul>
+                <li><strong>Symbolic Decoding:</strong> Reading a note on a staff</li>
+                <li><strong>Translation:</strong> Mapping that symbol to a physical location on an instrument</li>
+                <li><strong>Execution:</strong> Pressing the key</li>
+            </ul>
+            <p>This creates a "lag" in the brain's working memory. For most, the lag is so great that "flow state" is never achieved, leading to frustration and abandonment.</p>
+
+            <h3>Neural Programming (The Solution)</h3>
+            <p>The Rosetta Method treats music as a Visual-Spatial Flow. By using falling light arrays that physically align with the keys of an instrument:</p>
+            <ul>
+                <li>The brain perceives the stimulus and the action as a single event</li>
+                <li>The conscious "decoding" mind is bypassed</li>
+                <li>The song is written directly into procedural memory (muscle memory)</li>
+            </ul>
+            <p>Users experience "Primal Play"—the same instinctual joy a child feels when hitting a drum—while producing complex, high-level compositions.</p>
+        </div>
+
+        <div class="section">
+            <h2>3. The Software: Rosetta PNO</h2>
+            <p>Rosetta PNO is our open-source software suite designed to democratize this method.</p>
+
+            <h3>Technical Requirements</h3>
+            <ul>
+                <li><strong>Engine:</strong> High-performance, low-latency visualizer</li>
+                <li><strong>Compatibility:</strong> macOS (Apple Silicon/Intel), Windows 10/11, and Linux</li>
+                <li><strong>Input:</strong> Supports any Standard MIDI Interface</li>
+                <li><strong>The Vault:</strong> A community-driven repository of MIDI/XML data, ranging from classical masterpieces (Bach, Chopin) to modern mappings</li>
+                <li><strong>UI/UX:</strong> A "Cyber-Conservatory" aesthetic—minimalist, dark-mode, high-contrast neon visualizers to maximize focus</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>4. The Hardware: Acoustica Digitalis</h2>
+            <p>While the software works with any MIDI device, the Acoustica Digitalis is the ultimate expression of the Rosetta vision.</p>
+
+            <h3>Design Philosophy</h3>
+            <p>Designed with a "Jony Ive" minimalist aesthetic, the device prioritizes Material Truth and High-Tech Integration. It is a piece of fine furniture as much as it is a computer.</p>
+
+            <h3>Key Specifications</h3>
+            <ul>
+                <li><strong>Material:</strong> Sustainably sourced, high-end hardwood (Walnut/Mahogany) chassis</li>
+                <li><strong>The Integrated Wide Display:</strong> Unlike external monitors, the Acoustica Digitalis features a seamless, wide-aspect ratio screen built into the console. This eliminates parallax error, ensuring the falling notes align perfectly with the physical keys from the player's perspective</li>
+                <li><strong>Light-Guided Keys:</strong> Every key is equipped with subtle, high-density LED indicators that illuminate at the exact millisecond of impact</li>
+                <li><strong>Sensory Feedback:</strong> 88 weighted, hammer-action keys that replicate the feel of a concert grand, providing the necessary haptic feedback for neural programming</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>5. The Community: Apollotopia</h2>
+            <p>Apollotopia is the socio-economic engine behind the project. It represents our transition from "Tech Company" to "Harmonic Society."</p>
+
+            <h3>The Economic Model</h3>
+            <ul>
+                <li><strong>Democratized Access:</strong> The Rosetta PNO software is free. We refuse to gatekeep the ability to play music</li>
+                <li><strong>Voluntary Support:</strong> Our community asks for support through a "Pre-Download Modal," encouraging donations ($10, $25, $50+) to fuel server costs and R&D</li>
+                <li><strong>Hardware Pre-orders:</strong> The Acoustica Digitalis is sold as a premium, limited-batch device for those who want the full immersive experience</li>
+            </ul>
+
+            <h3>The Mission</h3>
+            <p>Apollotopia is a sanctuary for creators who believe that a society that plays together, stays in harmony. It is a digital and physical network of "Visionaries" and "Founders" dedicated to engineering a more resonant world.</p>
+        </div>
+
+        <div class="section">
+            <h2>6. Project Roadmap</h2>
+            <div class="roadmap-list">
+                <ol>
+                    <li><strong>Phase I:</strong> Open Source release of Rosetta PNO (Software) and The Vault</li>
+                    <li><strong>Phase II:</strong> Launch of the Apollotopia Community Portal and Manifesto</li>
+                    <li><strong>Phase III:</strong> Pre-order Batch 1 of Acoustica Digitalis (500 units)</li>
+                    <li><strong>Phase IV:</strong> Expansion of the Rosetta ecosystem into other harmonic instruments</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="highlight-box" style="margin-top: 80px;">
+            <p>"Music is not something you learn. It's something you remember. We're just helping you remember faster."</p>
+        </div>
+    </div>
+
+    <footer>
+        © 2025 Rosetta Project. All rights reserved.<br>
+        by Muse icOn
+    </footer>
+
+</body>
+</html>

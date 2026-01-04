@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal - Rosetta</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0507;
+            --bg-secondary: #1a0a0f;
+            --accent: #b2225b;
+            --accent-light: #d94a7f;
+            --text: #f5f5f7;
+            --text-secondary: #a1a1a6;
+            --text-tertiary: #6e6e73;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text);
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 56px;
+            background: rgba(10,5,7,0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(178,34,91,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+            z-index: 1000;
+        }
+        
+        .logo {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--accent-light);
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+        
+        .back-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .back-link:hover {
+            color: var(--accent-light);
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 100px 5% 80px;
+        }
+        
+        .page-tabs {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 60px;
+            border-bottom: 2px solid rgba(178,34,91,0.2);
+            flex-wrap: wrap;
+        }
+        
+        .tab {
+            padding: 16px 24px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            margin-bottom: -2px;
+        }
+        
+        .tab:hover {
+            color: var(--accent-light);
+        }
+        
+        .tab.active {
+            color: var(--accent-light);
+            border-bottom-color: var(--accent-light);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h1 {
+            font-size: clamp(36px, 6vw, 56px);
+            font-weight: 900;
+            color: var(--accent-light);
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+        
+        .last-updated {
+            color: var(--text-tertiary);
+            font-size: 14px;
+            margin-bottom: 48px;
+        }
+        
+        h2 {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--accent-light);
+            margin-top: 60px;
+            margin-bottom: 24px;
+        }
+        
+        h3 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text);
+            margin-top: 40px;
+            margin-bottom: 16px;
+        }
+        
+        p {
+            font-size: 17px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.9;
+        }
+        
+        ul, ol {
+            margin: 24px 0;
+            padding-left: 32px;
+        }
+        
+        li {
+            font-size: 17px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            line-height: 1.8;
+        }
+        
+        .highlight-box {
+            background: rgba(178,34,91,0.08);
+            border-left: 4px solid var(--accent-light);
+            padding: 24px 32px;
+            margin: 32px 0;
+            border-radius: 8px;
+        }
+        
+        .highlight-box p {
+            margin-bottom: 0;
+        }
+        
+        .contact-info {
+            background: var(--bg-secondary);
+            border: 1px solid rgba(178,34,91,0.2);
+            border-radius: 12px;
+            padding: 32px;
+            margin: 40px 0;
+        }
+        
+        .contact-info h4 {
+            font-size: 20px;
+            color: var(--accent-light);
+            margin-bottom: 16px;
+        }
+        
+        .contact-info a {
+            color: var(--accent-light);
+            text-decoration: none;
+        }
+        
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 60px 5%;
+            border-top: 1px solid rgba(178,34,91,0.2);
+            color: var(--text-tertiary);
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 80px 5% 60px;
+            }
+            
+            h1 {
+                font-size: 32px;
+            }
+            
+            h2 {
+                font-size: 28px;
+            }
+            
+            .page-tabs {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .tab {
+                width: 100%;
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">ROSETTA</a>
+        <a href="index.html" class="back-link">← Back to Home</a>
+    </header>
+
+    <div class="container">
+        <div class="page-tabs">
+            <button class="tab active" onclick="showTab('privacy')">Privacy Policy</button>
+            <button class="tab" onclick="showTab('terms')">Terms of Service</button>
+            <button class="tab" onclick="showTab('refund')">Refund Policy</button>
+        </div>
+
+        <!-- Privacy Policy -->
+        <div id="privacy" class="tab-content active">
+            <h1>Privacy Policy</h1>
+            <p class="last-updated">Last Updated: January 1, 2025</p>
+
+            <p>At Rosetta Project ("we," "us," or "our"), we respect your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, and safeguard your data when you use our website (rosetta.fun) and software (Rosetta PNO).</p>
+
+            <h2>1. Information We Collect</h2>
+
+            <h3>Information You Provide</h3>
+            <ul>
+                <li><strong>Account Information:</strong> When you create an account or sign up for updates, we collect your email address and name</li>
+                <li><strong>Payment Information:</strong> If you make a donation or pre-order hardware, we collect payment details through our secure payment processor (Stripe). We do not store your full credit card information</li>
+                <li><strong>Communications:</strong> When you contact us via email or support channels, we collect the content of your messages</li>
+            </ul>
+
+            <h3>Automatically Collected Information</h3>
+            <ul>
+                <li><strong>Usage Data:</strong> We collect information about how you interact with our software and website, including features used, session duration, and performance metrics</li>
+                <li><strong>Device Information:</strong> We collect device type, operating system, browser type, and IP address</li>
+                <li><strong>Cookies:</strong> We use essential cookies for site functionality and optional analytics cookies (which you can opt out of)</li>
+            </ul>
+
+            <h3>Software-Specific Data</h3>
+            <ul>
+                <li><strong>Practice Statistics:</strong> Rosetta PNO may collect anonymous practice data (songs played, duration, accuracy) to improve the software. This data is aggregated and cannot identify you personally</li>
+                <li><strong>MIDI Data:</strong> We do not collect or store your MIDI input data or musical performances</li>
+            </ul>
+
+            <h2>2. How We Use Your Information</h2>
+            <p>We use your information to:</p>
+            <ul>
+                <li>Provide, maintain, and improve Rosetta PNO and our services</li>
+                <li>Process donations and hardware pre-orders</li>
+                <li>Send you updates, newsletters, and important service announcements (you can opt out anytime)</li>
+                <li>Respond to your inquiries and provide customer support</li>
+                <li>Analyze usage patterns to improve user experience</li>
+                <li>Detect and prevent fraud or security issues</li>
+                <li>Comply with legal obligations</li>
+            </ul>
+
+            <h2>3. Data Sharing and Disclosure</h2>
+            <p>We do not sell your personal information. We may share your data with:</p>
+            <ul>
+                <li><strong>Service Providers:</strong> Payment processors (Stripe), email services (e.g., ConvertKit), and hosting providers who help us operate our services</li>
+                <li><strong>Legal Requirements:</strong> When required by law, court order, or to protect our rights and safety</li>
+                <li><strong>Business Transfers:</strong> In the event of a merger, acquisition, or sale of assets, your information may be transferred to the acquiring entity</li>
+            </ul>
+
+            <h2>4. Data Security</h2>
+            <p>We implement industry-standard security measures to protect your information, including encryption, secure servers, and access controls. However, no method of transmission over the internet is 100% secure, and we cannot guarantee absolute security.</p>
+
+            <h2>5. Your Rights and Choices</h2>
+            <p>You have the right to:</p>
+            <ul>
+                <li><strong>Access:</strong> Request a copy of your personal data</li>
+                <li><strong>Correction:</strong> Update or correct inaccurate information</li>
+                <li><strong>Deletion:</strong> Request deletion of your account and personal data</li>
+                <li><strong>Opt-Out:</strong> Unsubscribe from marketing emails at any time</li>
+                <li><strong>Data Portability:</strong> Request your data in a portable format</li>
+            </ul>
+            <p>To exercise these rights, contact us at <a href="mailto:privacy@rosetta.fun" style="color: var(--accent-light);">privacy@rosetta.fun</a></p>
+
+            <h2>6. Children's Privacy</h2>
+            <p>Rosetta PNO is designed for users of all ages. We do not knowingly collect personal information from children under 13 without parental consent. If you believe we have inadvertently collected such information, please contact us immediately.</p>
+
+            <h2>7. International Users</h2>
+            <p>If you are accessing our services from outside the United States, please be aware that your information may be transferred to and processed in the United States, where data protection laws may differ from those in your country.</p>
+
+            <h2>8. Changes to This Policy</h2>
+            <p>We may update this Privacy Policy from time to time. We will notify you of material changes by posting the new policy on our website and updating the "Last Updated" date. Continued use of our services after changes constitutes acceptance of the updated policy.</p>
+
+            <div class="contact-info">
+                <h4>Contact Us</h4>
+                <p>If you have questions about this Privacy Policy, please contact us at:</p>
+                <p><a href="mailto:privacy@rosetta.fun">privacy@rosetta.fun</a></p>
+            </div>
+        </div>
+
+        <!-- Terms of Service -->
+        <div id="terms" class="tab-content">
+            <h1>Terms of Service</h1>
+            <p class="last-updated">Last Updated: January 1, 2025</p>
+
+            <p>Welcome to Rosetta. By accessing or using our website (rosetta.fun) and software (Rosetta PNO), you agree to be bound by these Terms of Service ("Terms"). If you do not agree, please do not use our services.</p>
+
+            <h2>1. Acceptance of Terms</h2>
+            <p>These Terms constitute a legally binding agreement between you and Rosetta Project (operated by Muse icOn). By downloading Rosetta PNO, creating an account, or using our services, you acknowledge that you have read, understood, and agree to these Terms.</p>
+
+            <h2>2. License to Use Rosetta PNO</h2>
+
+            <h3>Software License</h3>
+            <p>Rosetta PNO is open-source software distributed under the [INSERT LICENSE TYPE, e.g., MIT License, GPL v3]. You are granted a free, non-exclusive, non-transferable license to:</p>
+            <ul>
+                <li>Download, install, and use Rosetta PNO for personal, educational, or commercial purposes</li>
+                <li>View, modify, and distribute the source code in accordance with the open-source license</li>
+                <li>Contribute to the project through our community channels</li>
+            </ul>
+
+            <h3>Restrictions</h3>
+            <p>You may not:</p>
+            <ul>
+                <li>Use Rosetta PNO for illegal activities or in violation of any laws</li>
+                <li>Attempt to reverse engineer, decompile, or hack the software for malicious purposes</li>
+                <li>Remove or alter any copyright, trademark, or proprietary notices</li>
+                <li>Sell or redistribute Rosetta PNO as your own product without proper attribution</li>
+            </ul>
+
+            <h2>3. User Accounts</h2>
+            <p>To access certain features (such as The Vault or community forums), you may need to create an account. You are responsible for:</p>
+            <ul>
+                <li>Maintaining the confidentiality of your account credentials</li>
+                <li>All activities that occur under your account</li>
+                <li>Notifying us immediately of any unauthorized use</li>
+            </ul>
+            <p>We reserve the right to suspend or terminate accounts that violate these Terms.</p>
+
+            <h2>4. Community Guidelines</h2>
+            <p>When participating in Apollotopia or other community spaces, you agree to:</p>
+            <ul>
+                <li>Treat others with respect and kindness</li>
+                <li>Not post spam, offensive, or illegal content</li>
+                <li>Respect intellectual property rights when sharing songs or content</li>
+                <li>Not impersonate others or misrepresent your affiliation with Rosetta</li>
+            </ul>
+            <p>We reserve the right to remove content and ban users who violate these guidelines.</p>
+
+            <h2>5. Donations and Purchases</h2>
+
+            <h3>Voluntary Donations</h3>
+            <p>Rosetta PNO is free software. Donations are voluntary and help support server costs, development, and community initiatives. Donations are non-refundable unless required by law.</p>
+
+            <h3>Hardware Pre-Orders</h3>
+            <p>Acoustica Digitalis hardware is sold on a pre-order basis. By placing a pre-order, you agree to:</p>
+            <ul>
+                <li>The estimated delivery timeline provided (subject to change due to manufacturing delays)</li>
+                <li>Pay a deposit, which may be refundable or non-refundable depending on the tier selected</li>
+                <li>Our Refund Policy (see separate policy)</li>
+            </ul>
+
+            <h2>6. Intellectual Property</h2>
+            <p>All content on rosetta.fun, including text, graphics, logos, and software (excluding open-source code), is owned by Rosetta Project or licensed to us. You may not use our trademarks or content without written permission, except as permitted by the open-source license for Rosetta PNO.</p>
+
+            <h3>User-Generated Content</h3>
+            <p>By uploading songs, MIDI files, or other content to The Vault, you grant us a non-exclusive, worldwide, royalty-free license to use, display, and distribute your content within the Rosetta ecosystem. You retain ownership of your content.</p>
+
+            <h2>7. Disclaimer of Warranties</h2>
+            <div class="highlight-box">
+                <p><strong>ROSETTA PNO AND ALL SERVICES ARE PROVIDED "AS IS" WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED.</strong> We do not guarantee that the software will be error-free, secure, or uninterrupted. Use at your own risk.</p>
+            </div>
+
+            <h2>8. Limitation of Liability</h2>
+            <p>To the fullest extent permitted by law, Rosetta Project shall not be liable for any indirect, incidental, consequential, or punitive damages arising from your use of our services, including loss of data, revenue, or profits.</p>
+
+            <h2>9. Indemnification</h2>
+            <p>You agree to indemnify and hold harmless Rosetta Project from any claims, damages, or expenses arising from your violation of these Terms or misuse of our services.</p>
+
+            <h2>10. Changes to Terms</h2>
+            <p>We may modify these Terms at any time. Material changes will be communicated via email or a prominent notice on our website. Continued use of our services after changes constitutes acceptance of the new Terms.</p>
+
+            <h2>11. Termination</h2>
+            <p>We may suspend or terminate your access to our services at any time for violations of these Terms, illegal activity, or at our discretion. You may stop using our services at any time.</p>
+
+            <h2>12. Governing Law</h2>
+            <p>These Terms are governed by the laws of [INSERT JURISDICTION, e.g., California, USA], without regard to conflict of law principles. Any disputes will be resolved in the courts of [INSERT JURISDICTION].</p>
+
+            <div class="contact-info">
+                <h4>Contact Us</h4>
+                <p>For questions about these Terms, contact us at:</p>
+                <p><a href="mailto:legal@rosetta.fun">legal@rosetta.fun</a></p>
+            </div>
+        </div>
+
+        <!-- Refund Policy -->
+        <div id="refund" class="tab-content">
+            <h1>Refund Policy</h1>
+            <p class="last-updated">Last Updated: January 1, 2025</p>
+
+            <p>At Rosetta Project, we want you to be completely satisfied with your purchase. This Refund Policy outlines the terms for refunds on donations and hardware pre-orders.</p>
+
+            <h2>1. Rosetta PNO Software</h2>
+            <p>Rosetta PNO is <strong>free and open-source software</strong>. No refunds are applicable as there is no purchase price.</p>
+
+            <h2>2. Voluntary Donations</h2>
+            <p>Donations to support the Rosetta Project are voluntary contributions and are generally <strong>non-refundable</strong>. However, if you made a donation in error or under exceptional circumstances, please contact us at <a href="mailto:support@rosetta.fun" style="color: var(--accent-light);">support@rosetta.fun</a> within 7 days, and we will review your request on a case-by-case basis.</p>
+
+            <h2>3. Acoustica Digitalis Hardware Pre-Orders</h2>
+
+            <h3>Refundable Deposits</h3>
+            <p>If you selected a <strong>refundable deposit</strong> option ($100 tier):</p>
+            <ul>
+                <li>You may request a full refund at any time before your unit ships</li>
+                <li>Refunds will be processed within 14 business days</li>
+                <li>Once your unit has shipped, the deposit is no longer refundable</li>
+            </ul>
+
+            <h3>Non-Refundable Deposits</h3>
+            <p>If you selected a <strong>non-refundable deposit</strong> option ($500 tier with 10% discount):</p>
+            <ul>
+                <li>Your deposit is <strong>non-refundable</strong> under standard circumstances</li>
+                <li>Refunds may be granted in cases of manufacturing delays exceeding 12 months from the original estimated delivery date</li>
+                <li>If the product is significantly different from what was advertised, you may be eligible for a refund</li>
+            </ul>
+
+            <h3>Post-Delivery Returns</h3>
+            <p>Once your Acoustica Digitalis unit has been delivered:</p>
+            <ul>
+                <li>You have <strong>30 days</strong> from the delivery date to request a return</li>
+                <li>The unit must be in like-new condition with all original packaging and accessories</li>
+                <li>You are responsible for return shipping costs unless the unit is defective</li>
+                <li>A restocking fee of 15% may apply to non-defective returns</li>
+                <li>Refunds will be processed within 14 business days of receiving the returned unit</li>
+            </ul>
+
+            <h2>4. Defective Products</h2>
+            <p>If your Acoustica Digitalis unit arrives damaged or defective:</p>
+            <ul>
+                <li>Contact us within 7 days of delivery with photos/video of the issue</li>
+                <li>We will provide a prepaid return label at no cost to you</li>
+                <li>You may choose a replacement unit or a full refund</li>
+                <li>No restocking fees apply to defective products</li>
+            </ul>
+
+            <h2>5. Warranty</h2>
+            <p>Acoustica Digitalis hardware includes a <strong>1-year limited warranty</strong> covering manufacturing defects. The warranty does not cover:</p>
+            <ul>
+                <li>Normal wear and tear</li>
+                <li>Damage from misuse, accidents, or unauthorized modifications</li>
+                <li>Software issues (Rosetta PNO is maintained separately as open-source software)</li>
+            </ul>
+
+            <h2>6. How to Request a Refund</h2>
+            <p>To request a refund or return:</p>
+            <ol>
+                <li>Email <a href="mailto:support@rosetta.fun" style="color: var(--accent-light);">support@rosetta.fun</a> with your order number and reason for the refund</li>
+                <li>Include any supporting documentation (photos, videos, receipts)</li>
+                <li>Our team will review your request within 3 business days</li>
+                <li>If approved, refunds will be issued to the original payment method within 14 business days</li>
+            </ol>
+
+            <h2>7. Manufacturing Delays</h2>
+            <p>Due to the custom nature of Acoustica Digitalis, delivery timelines are estimates. If your order is delayed beyond the estimated delivery window:</p>
+            <ul>
+                <li>We will notify you via email with updated timelines</li>
+                <li>If delays exceed 6 months, you may request a full refund (even for non-refundable deposits)</li>
+                <li>If delays exceed 12 months, all customers are eligible for full refunds</li>
+            </ul>
+
+            <h2>8. Cancellations</h2>
+            <p>You may cancel your pre-order at any time before your unit ships (subject to the refund tier you selected). Once production has begun on your specific unit, cancellations may not be possible, and you will be notified if this is the case.</p>
+
+            <div class="highlight-box">
+                <p><strong>Important:</strong> Refunds are subject to the payment processor's terms and may take 5-10 business days to appear on your statement after being issued by us.</p>
+            </div>
+
+            <div class="contact-info">
+                <h4>Contact Us</h4>
+                <p>For refund requests or questions, please contact:</p>
+                <p><a href="mailto:support@rosetta.fun">support@rosetta.fun</a></p>
+                <p>Include your order number and a brief description of your request.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        © 2025 Rosetta Project. All rights reserved.<br>
+        by Muse icOn
+    </footer>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all content
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(c => c.classList.remove('active'));
+            
+            // Deactivate all tabs
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            
+            // Show selected content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Activate selected tab
+            event.target.classList.add('active');
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+
+</body>
+</html>
