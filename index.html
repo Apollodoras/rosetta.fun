@@ -7,6 +7,19 @@
     <title>Rosetta – Don't Learn Music, Play Music</title>
     <meta name="description"
         content="Achieve instant musical fluency through pure instinct. Rosetta bypasses the cognitive bottleneck of traditional notation.">
+    <script>
+        // Initialize theme before DOM renders to prevent flash
+        (function() {
+            const stored = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const isDark = stored ? stored === 'dark' : prefersDark;
+            if (isDark) {
+                document.documentElement.classList.add('dark-mode');
+            } else {
+                document.documentElement.classList.add('light-mode');
+            }
+        })();
+    </script>
     <style>
         body { font-family: system-ui, -apple-system, sans-serif; background: #0f0f0f; color: #fff; margin: 0; padding: 0; }
         header { padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
@@ -42,6 +55,9 @@
                 <li><a href="manifesto.html">Manifesto</a></li>
             </ul>
         </nav>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Toggle theme">
+            <span id="themeIcon">🌙</span>
+        </button>
         <button class="header-cta" onclick="openModal('download-modal')">Get Updates</button>
     </header>
 
@@ -416,6 +432,39 @@
 
         // Initial empty search to show featured
         performSearch();
+    </script>
+
+    <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const htmlElement = document.documentElement;
+
+        function updateThemeIcon() {
+            const isDark = htmlElement.classList.contains('dark-mode');
+            themeIcon.textContent = isDark ? '☀️' : '🌙';
+        }
+
+        function toggleTheme() {
+            const isDark = htmlElement.classList.contains('dark-mode');
+            
+            if (isDark) {
+                htmlElement.classList.remove('dark-mode');
+                htmlElement.classList.add('light-mode');
+                localStorage.setItem('theme', 'light');
+            } else {
+                htmlElement.classList.remove('light-mode');
+                htmlElement.classList.add('dark-mode');
+                localStorage.setItem('theme', 'dark');
+            }
+            
+            updateThemeIcon();
+        }
+
+        themeToggle.addEventListener('click', toggleTheme);
+        
+        // Set initial icon
+        updateThemeIcon();
     </script>
 </body>
 
