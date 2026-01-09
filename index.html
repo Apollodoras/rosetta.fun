@@ -7,13 +7,25 @@
     <title>Rosetta – Don't Learn Music, Play Music</title>
     <meta name="description"
         content="Achieve instant musical fluency through pure instinct. Rosetta bypasses the cognitive bottleneck of traditional notation.">
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; background: #0f0f0f; color: #fff; margin: 0; padding: 0; }
+        header { padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        h1 { font-size: 2.5rem; margin: 1rem 0; }
+    </style>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet">
+        rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+            rel="stylesheet">
+    </noscript>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="style.css">
+    </noscript>
 </head>
 
 <body>
