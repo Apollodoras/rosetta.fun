@@ -31,6 +31,7 @@
 
 html {
     scroll-behavior: smooth;
+    scroll-snap-type: y mandatory;
 }
 
 body {
@@ -63,6 +64,8 @@ section {
     margin: 0 auto;
     position: relative;
     overflow: hidden;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
     /* Contain the blobs */
 }
 
