@@ -26,7 +26,7 @@
                 <li><a href="#method">Method</a></li>
                 <li><a href="#software">Software</a></li>
                 <li><a href="#hardware">Hardware</a></li>
-                <li><a href="#search">Find Music</a></li>
+                <!-- <li><a href="#search">Find Music</a></li> -->
                 <li><a href="manifesto.html">Manifesto</a></li>
             </ul>
         </nav>
@@ -160,80 +160,9 @@
         </div>
     </section>
 
-    <!-- Find Music Section -->
-    <section id="search" class="reveal">
-        <div class="bg-blob blob-2" style="left: -100px; top: 0; opacity: 0.2;"></div>
-        <div class="section-glass-wrap">
-            <div class="section-header">
-                <h2>Find Music</h2>
-                <p>Search thousands of high-quality MIDI and MusicXML files for your practice.</p>
-            </div>
-
-            <div class="search-container">
-                <div class="search-layout">
-                    <!-- Sidebar Filters -->
-                    <aside class="search-sidebar">
-                        <div class="filter-section">
-                            <h4>Difficulty</h4>
-                            <div class="filter-options-stack">
-                                <button class="filter-btn" data-type="difficulty"
-                                    data-value="beginner">Beginner</button>
-                                <button class="filter-btn" data-type="difficulty"
-                                    data-value="intermediate">Intermediate</button>
-                                <button class="filter-btn" data-type="difficulty"
-                                    data-value="advanced">Advanced</button>
-                                <button class="filter-btn" data-type="difficulty" data-value="expert">Expert</button>
-                            </div>
-                        </div>
-
-                        <div class="filter-section">
-                            <h4>Genre</h4>
-                            <div class="filter-options-cloud">
-                                <button class="filter-btn" data-type="genre" data-value="classical">Classical</button>
-                                <button class="filter-btn" data-type="genre" data-value="jazz">Jazz</button>
-                                <button class="filter-btn" data-type="genre" data-value="pop">Pop</button>
-                                <button class="filter-btn" data-type="genre" data-value="rock">Rock</button>
-                                <button class="filter-btn" data-type="genre" data-value="folk">Folk</button>
-                                <button class="filter-btn" data-type="genre" data-value="game">Game</button>
-                                <button class="filter-btn" data-type="genre" data-value="movie">Movie</button>
-                                <button class="filter-btn" data-type="genre" data-value="hymn">Hymn</button>
-                                <button class="filter-btn" data-type="genre" data-value="other">Other</button>
-                            </div>
-                        </div>
-
-                        <div class="filter-section">
-                            <h4>Period</h4>
-                            <div class="filter-options-stack">
-                                <button class="filter-btn" data-type="period" data-value="baroque">Baroque</button>
-                                <button class="filter-btn" data-type="period" data-value="classical">Classical</button>
-                                <button class="filter-btn" data-type="period" data-value="romantic">Romantic</button>
-                                <button class="filter-btn" data-type="period" data-value="modern">Modern</button>
-                                <button class="filter-btn" data-type="period"
-                                    data-value="contemporary">Contemporary</button>
-                            </div>
-                        </div>
-                    </aside>
-
-                    <!-- Main Search Area -->
-                    <div class="search-main">
-                        <div class="search-bar-wrap">
-                            <input type="text" id="search-input" placeholder="Search by song, composer, or tag..."
-                                autocomplete="off">
-                            <div id="autocomplete-results" class="autocomplete-list"></div>
-                        </div>
-
-                        <div id="search-results" class="search-results-grid">
-                            <!-- Results will be injected here -->
-                        </div>
-
-                        <div id="search-loading" class="search-status" style="display: none;">Searching the neural
-                            archives...</div>
-                        <div id="search-empty" class="search-status" style="display: none;">No results found in this
-                            sector.</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- Find Music Section - temporarily hidden to improve navigation/scroll performance -->
+    <section id="search" style="display:none;" aria-hidden="true">
+        <!-- Search section was removed from public view pending redesign. -->
     </section>
 
     <!-- Community Section -->
@@ -329,48 +258,50 @@
 
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        // Search Engine Logic
-        const API_BASE = 'https://tahar-immouni--rosetta-midi-search-web-app.modal.run';
-        const searchInput = document.getElementById('search-input');
-        const resultsContainer = document.getElementById('search-results');
-        const loadingIndicator = document.getElementById('search-loading');
-        const emptyIndicator = document.getElementById('search-empty');
-        const autocompleteBox = document.getElementById('autocomplete-results');
-        const filterBtns = document.querySelectorAll('.filter-btn');
+        // Search Engine Logic - disabled unless search inputs are present
+        if (document.getElementById('search-input')) {
+            const API_BASE = 'https://tahar-immouni--rosetta-midi-search-web-app.modal.run';
+            const searchInput = document.getElementById('search-input');
+            const resultsContainer = document.getElementById('search-results');
+            const loadingIndicator = document.getElementById('search-loading');
+            const emptyIndicator = document.getElementById('search-empty');
+            const autocompleteBox = document.getElementById('autocomplete-results');
+            const filterBtns = document.querySelectorAll('.filter-btn');
 
-        let activeFilters = {
-            difficulty: [],
-            genre: [],
-            period: []
-        };
+            let activeFilters = {
+                difficulty: [],
+                genre: [],
+                period: []
+            };
 
-        let searchTimeout;
+            let searchTimeout;
 
-        // Enter key support
-        searchInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
+            // Enter key support
+            searchInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    clearTimeout(searchTimeout);
+                    autocompleteBox.style.display = 'none';
+                    performSearch(searchInput.value);
+                }
+            });
+
+            searchInput.addEventListener('input', (e) => {
                 clearTimeout(searchTimeout);
-                autocompleteBox.style.display = 'none';
-                performSearch(searchInput.value);
-            }
-        });
+                const query = e.target.value.trim();
 
-        searchInput.addEventListener('input', (e) => {
-            clearTimeout(searchTimeout);
-            const query = e.target.value.trim();
+                if (query.length < 2) {
+                    autocompleteBox.style.display = 'none';
+                    return;
+                }
 
-            if (query.length < 2) {
-                autocompleteBox.style.display = 'none';
-                return;
-            }
-
-            searchTimeout = setTimeout(() => {
-                fetchAutocomplete(query);
-                // Optional: Live search as they type, or wait for Enter?
-                // For now, let's keep live search but with debounce
-                performSearch(query);
-            }, 500);
-        });
+                searchTimeout = setTimeout(() => {
+                    fetchAutocomplete(query);
+                    // Optional: Live search as they type, or wait for Enter?
+                    // For now, let's keep live search but with debounce
+                    performSearch(query);
+                }, 500);
+            });
+        }
 
         async function fetchAutocomplete(query) {
             try {
