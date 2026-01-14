@@ -100,7 +100,6 @@ body {
     -webkit-font-smoothing: antialiased;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
-}
 
 /* Typography */
 h1,
@@ -308,14 +307,30 @@ nav a:hover {
 .hero h1 {
     font-size: clamp(40px, 10vw, 100px);
     margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
 }
 
 .hero h1 .gradient-text {
     display: block;
+    font-size: clamp(48px, 12vw, 120px);
+    font-weight: 900;
     background: linear-gradient(to right, var(--text-primary), var(--accent-light));
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    line-height: 1;
+}
+
+.hero h1 .hero-subtitle {
+    display: block;
+    font-size: clamp(20px, 4vw, 36px);
+    font-weight: 600;
+    color: var(--text-secondary);
+    line-height: 1.2;
+    margin-top: 8px;
 }
 
 .hero-subtext {
@@ -553,16 +568,132 @@ nav a:hover {
 
 /* Responsive */
 @media (max-width: 968px) {
+    /* 1. Reduce overall section padding */
+    section {
+        padding: 80px 5%;
+    }
+
+    /* 2. Fix the glass container padding */
+    .section-glass-wrap {
+        padding: 40px 24px;
+        border-radius: 32px;
+    }
+
+    /* 3. Center content blocks when they stack */
     .content-block {
         grid-template-columns: 1fr;
         gap: 40px;
+        text-align: center;
     }
 
+    /* 4. Fix reverse layout alignment */
+    .content-block.reverse {
+        direction: ltr;
+    }
+
+    /* 5. Center the feature lists within their containers */
+    .feature-list {
+        display: inline-block;
+        text-align: left;
+        max-width: 100%;
+    }
+
+    /* 6. Fix header spacing when nav is hidden */
     header nav {
         display: none;
     }
-}
+    
+    .theme-toggle {
+        margin-left: auto; /* Pushes toggle and CTA to the right together */
+        margin-right: 15px;
+    }
 
+    /* 7. Ensure images are centered and don't overflow */
+    .image-container {
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    .hero h1 {
+        font-size: clamp(36px, 12vw, 64px);
+        gap: 12px;
+    }
+
+    .hero h1 .gradient-text {
+        font-size: clamp(42px, 14vw, 80px);
+    }
+
+    .hero h1 .hero-subtitle {
+        font-size: clamp(18px, 4.5vw, 28px);
+    }
+
+    /* 8. Center section headers on mobile */
+    .section-header {
+        text-align: center;
+    }
+
+    /* 9. Center text containers */
+    .text-container {
+        text-align: center;
+    }
+
+    .text-container h3 {
+        text-align: center;
+    }
+
+    /* 10. Fix footer navigation on mobile */
+    footer nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    /* 11. Ensure footer logo is centered */
+    footer .logo {
+        display: inline-flex !important;
+        justify-content: center;
+        width: auto;
+        margin: 0 auto;
+    }
+
+    /* 12. Center card grid on mobile */
+    .card-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    /* 13. Adjust button group for mobile */
+    .btn-group {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    .btn-group .btn {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    /* 14. Fix modal on mobile */
+    .modal-content {
+        padding: 40px 24px;
+        margin: 20px;
+        max-width: calc(100% - 40px);
+    }
+
+    /* 15. Ensure header CTA button doesn't overflow */
+    .header-cta {
+        font-size: 12px;
+        padding: 8px 16px;
+        white-space: nowrap;
+    }
+
+    /* 16. Adjust hero padding for mobile */
+    .hero {
+        padding-top: 120px;
+        padding-bottom: 60px;
+    }
+}
 /* Document Layout & Global Classes */
 .document-container {
     max-width: 900px;
