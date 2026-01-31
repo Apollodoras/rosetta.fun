@@ -248,15 +248,23 @@
                 </button>
             </div>
 
-            <button class="btn btn-primary" style="width: 100%;">Continue to Download</button>
+            <p style="margin-bottom: 12px; font-weight: 600;">Download for your platform</p>
+            <div id="download-platform-links" style="display: grid; gap: 10px;">
+                <span id="download-loading" style="color: var(--text-secondary);">Loading…</span>
+            </div>
+            <p id="download-fallback" style="display: none; margin-top: 16px;"><a href="#" id="download-releases-link" target="_blank" rel="noopener" class="btn btn-secondary" style="width: 100%;">View all releases on GitHub</a></p>
         </div>
     </div>
 
     <script>
+        // GitHub repo for Rosetta PNO releases (e.g. owner/repo)
+        const GITHUB_REPO = 'Apollodoras/rosetta.fun';
+
         // Modal Logic
         function openModal(id) {
             document.getElementById(id).classList.add('active');
             document.body.style.overflow = 'hidden';
+            if (id === 'download-modal') populateDownloadLinks();
         }
 
         function closeModal(id) {
@@ -269,6 +277,93 @@
                 event.target.classList.remove('active');
                 document.body.style.overflow = 'auto';
             }
+        }
+
+        // Download links from GitHub latest release
+        let cachedRelease = null;
+
+        function platformFromAsset(name) {
+            const n = name.toLowerCase();
+            if (n.endsWith('.exe') || n.endsWith('.msi') || n.includes('windows')) return 'windows';
+            if (n.endsWith('.dmg') || n.includes('macos') || n.includes('darwin') || n.includes('mac')) return 'macos';
+            if (n.endsWith('.appimage') || n.endsWith('.deb') || n.includes('linux')) return 'linux';
+            return null;
+        }
+
+        function renderDownloadLinks(assets, releasesUrl) {
+            const container = document.getElementById('download-platform-links');
+            const loading = document.getElementById('download-loading');
+            const fallback = document.getElementById('download-fallback');
+            const fallbackLink = document.getElementById('download-releases-link');
+            fallbackLink.href = releasesUrl;
+
+            const byPlatform = { windows: [], macos: [], linux: [] };
+            assets.forEach(function (a) {
+                const p = platformFromAsset(a.name);
+                if (p && byPlatform[p]) byPlatform[p].push(a);
+            });
+
+            const labels = { windows: 'Windows', macos: 'macOS', linux: 'Linux' };
+            let html = '';
+            ['windows', 'macos', 'linux'].forEach(function (p) {
+                const list = byPlatform[p];
+                if (list.length) {
+                    list.forEach(function (a) {
+                        html += '<a href="' + a.browser_download_url + '" target="_blank" rel="noopener" class="btn btn-primary" style="width: 100%; text-align: center;">Download for ' + labels[p] + (list.length > 1 ? ' (' + a.name + ')' : '') + '</a>';
+                    });
+                }
+            });
+
+            if (html) {
+                loading.style.display = 'none';
+                container.innerHTML = html;
+            } else {
+                loading.textContent = 'No installers found for this release.';
+                fallback.style.display = 'block';
+            }
+        }
+
+        function populateDownloadLinks() {
+            const container = document.getElementById('download-platform-links');
+            const loading = document.getElementById('download-loading');
+            const fallback = document.getElementById('download-fallback');
+            const fallbackLink = document.getElementById('download-releases-link');
+            const releasesUrl = 'https://github.com/' + GITHUB_REPO + '/releases';
+
+            if (cachedRelease) {
+                renderDownloadLinks(cachedRelease.assets, cachedRelease.html_url || releasesUrl);
+                return;
+            }
+
+            loading.textContent = 'Loading…';
+            fallback.style.display = 'none';
+            function useRelease(data) {
+                if (data && data.assets && data.assets.length) {
+                    cachedRelease = { assets: data.assets, html_url: data.html_url };
+                    renderDownloadLinks(data.assets, data.html_url || releasesUrl);
+                } else {
+                    loading.textContent = 'No release assets found.';
+                    fallbackLink.href = releasesUrl;
+                    fallback.style.display = 'block';
+                }
+            }
+            fetch('https://api.github.com/repos/' + GITHUB_REPO + '/releases/latest')
+                .then(function (res) { return res.json(); })
+                .then(function (data) {
+                    if (data.message === 'Not Found' || !data.assets || data.assets.length === 0) {
+                        return fetch('https://api.github.com/repos/' + GITHUB_REPO + '/releases').then(function (r) { return r.json(); });
+                    }
+                    useRelease(data);
+                    return null;
+                })
+                .then(function (list) {
+                    if (list && Array.isArray(list) && list.length) useRelease(list[0]);
+                })
+                .catch(function () {
+                    loading.textContent = 'Could not load releases.';
+                    fallbackLink.href = releasesUrl;
+                    fallback.style.display = 'block';
+                });
         }
 
         // Reveal Animations
