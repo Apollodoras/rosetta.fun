@@ -252,6 +252,7 @@
             <div id="download-platform-links" style="display: grid; gap: 10px;">
                 <span id="download-loading" style="color: var(--text-secondary);">Loading…</span>
             </div>
+            <p id="download-hint" style="display: none; margin-top: 12px; font-size: 14px; color: var(--text-secondary);">Unzip the file and run the installer.</p>
             <p id="download-fallback" style="display: none; margin-top: 16px;"><a href="#" id="download-releases-link" target="_blank" rel="noopener" class="btn btn-secondary" style="width: 100%;">View all releases on GitHub</a></p>
         </div>
     </div>
@@ -282,15 +283,16 @@
         // Download links from GitHub latest release
         let cachedRelease = null;
 
-        function platformFromAsset(name) {
+        function platformFromAsset(name, releaseName) {
             const n = name.toLowerCase();
-            if (n.endsWith('.exe') || n.endsWith('.msi') || n.includes('windows')) return 'windows';
-            if (n.endsWith('.dmg') || n.includes('macos') || n.includes('darwin') || n.includes('mac')) return 'macos';
-            if (n.endsWith('.appimage') || n.endsWith('.deb') || n.includes('linux')) return 'linux';
+            const r = (releaseName || '').toLowerCase();
+            if (n.endsWith('.exe') || n.endsWith('.msi') || n.includes('windows') || (n.endsWith('.zip') && (r.includes('windows') || r.includes('win')))) return 'windows';
+            if (n.endsWith('.dmg') || n.endsWith('.pkg') || n.includes('macos') || n.includes('darwin') || n.includes('mac') || (n.endsWith('.zip') && (r.includes('mac') || r.includes('osx')))) return 'macos';
+            if (n.endsWith('.appimage') || n.endsWith('.deb') || n.endsWith('.rpm') || n.includes('linux') || (n.endsWith('.zip') && r.includes('linux'))) return 'linux';
             return null;
         }
 
-        function renderDownloadLinks(assets, releasesUrl) {
+        function renderDownloadLinks(assets, releasesUrl, releaseName) {
             const container = document.getElementById('download-platform-links');
             const loading = document.getElementById('download-loading');
             const fallback = document.getElementById('download-fallback');
@@ -298,9 +300,11 @@
             fallbackLink.href = releasesUrl;
 
             const byPlatform = { windows: [], macos: [], linux: [] };
+            const other = [];
             assets.forEach(function (a) {
-                const p = platformFromAsset(a.name);
+                const p = platformFromAsset(a.name, releaseName);
                 if (p && byPlatform[p]) byPlatform[p].push(a);
+                else other.push(a);
             });
 
             const labels = { windows: 'Windows', macos: 'macOS', linux: 'Linux' };
@@ -313,10 +317,15 @@
                     });
                 }
             });
+            other.forEach(function (a) {
+                html += '<a href="' + a.browser_download_url + '" target="_blank" rel="noopener" class="btn btn-primary" style="width: 100%; text-align: center;">Download ' + a.name + '</a>';
+            });
 
             if (html) {
                 loading.style.display = 'none';
                 container.innerHTML = html;
+                const hintEl = document.getElementById('download-hint');
+                if (hintEl) hintEl.style.display = assets.some(function (a) { return a.name.toLowerCase().endsWith('.zip'); }) ? 'block' : 'none';
             } else {
                 loading.textContent = 'No installers found for this release.';
                 fallback.style.display = 'block';
@@ -331,7 +340,7 @@
             const releasesUrl = 'https://github.com/' + GITHUB_REPO + '/releases';
 
             if (cachedRelease) {
-                renderDownloadLinks(cachedRelease.assets, cachedRelease.html_url || releasesUrl);
+                renderDownloadLinks(cachedRelease.assets, cachedRelease.html_url || releasesUrl, cachedRelease.name);
                 return;
             }
 
@@ -339,8 +348,8 @@
             fallback.style.display = 'none';
             function useRelease(data) {
                 if (data && data.assets && data.assets.length) {
-                    cachedRelease = { assets: data.assets, html_url: data.html_url };
-                    renderDownloadLinks(data.assets, data.html_url || releasesUrl);
+                    cachedRelease = { assets: data.assets, html_url: data.html_url, name: data.name };
+                    renderDownloadLinks(data.assets, data.html_url || releasesUrl, data.name);
                 } else {
                     loading.textContent = 'No release assets found.';
                     fallbackLink.href = releasesUrl;
