@@ -1,0 +1,17 @@
+# Cloudflare Pages header rules (the Vercel equivalent lives in vercel.json —
+# both are shipped because the host isn't chosen yet, and the wrong one is
+# simply ignored by whichever platform reads the other).
+#
+# The AASA line is the one that actually matters: Apple requires
+# `application/json` on an extensionless file, and a static host will otherwise
+# serve it as text/plain, which fails silently — AutoFill just never works.
+
+/.well-known/apple-app-site-association
+  Content-Type: application/json
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()

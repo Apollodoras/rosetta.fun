@@ -1,0 +1,59 @@
+---
+import Base from '../../layouts/Base.astro';
+
+// DRAFT — owner approves before publish (A8 owner prerequisites).
+//
+// The load-bearing honesty here (ROSETTA_FUN §8): Apple owns refunds for
+// in-app purchases. We cannot process them, and this page must say so and link
+// to Apple's flow rather than implying we can help.
+const updated = 'July 2026';
+const contact = 'support@rosetta.fun';
+---
+
+<Base title="Refunds · Rosetta" description="How refunds work, and who to ask.">
+  <h1>Refunds</h1>
+  <p class="faint">Last updated: {updated}</p>
+
+  <p>
+    Where you bought decides who can refund you. There are two answers, and only one of them is us.
+  </p>
+
+  <h2>Bought on this website (Stripe)</h2>
+  <p>
+    Email <a href={`mailto:${contact}`}>{contact}</a> within <strong>14 days</strong> and we'll refund you, as
+    long as you haven't used most of what you bought. If something went wrong on our end — you were charged
+    twice, or a purchase never arrived in your account — tell us whenever you notice and we'll fix it, no time
+    limit.
+  </p>
+  <p>
+    Refunds go back to the card you paid with, usually within 5–10 business days once we've issued them.
+    Refunding a pack removes the credits it granted; if you've already spent them, your balance can go to
+    zero but never below.
+  </p>
+  <p>
+    You can cancel a subscription any time from <a href="/account">your account page</a>. Cancelling stops the
+    next renewal — you keep what you've paid for until the period ends.
+  </p>
+
+  <h2>Bought in the iOS app (Apple)</h2>
+  <p>
+    <strong>Apple handles those refunds, not us.</strong> We can see that a purchase happened, but we can't
+    reverse the charge — Apple took the payment, and only Apple can return it.
+  </p>
+  <p>
+    Request one at <a href="https://reportaproblem.apple.com" rel="noopener">reportaproblem.apple.com</a>, or
+    from Settings on your device. Apple decides these case by case.
+  </p>
+  <p>
+    Manage or cancel an app subscription in <em>Settings → your name → Subscriptions</em> on your iPhone.
+  </p>
+
+  <h2>If you delete your account</h2>
+  <p>
+    Deleting your account is permanent and doesn't trigger a refund — remaining credits and paid time are lost.
+    If you want a refund, ask for it before you delete.
+  </p>
+
+  <h2>Contact</h2>
+  <p><a href={`mailto:${contact}`}>{contact}</a></p>
+</Base>

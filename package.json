@@ -1,0 +1,22 @@
+{
+  "name": "rosetta-fun",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "description": "rosetta.fun — the account surface and legal pages for Rosetta GP (ROSETTA_ACCOUNTS.md phase A8).",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "test": "node --experimental-strip-types --test test/*.test.ts"
+  },
+  "dependencies": {
+    "astro": "^7.1.1",
+    "firebase": "^12.16.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "typescript": "^6.0.3"
+  }
+}

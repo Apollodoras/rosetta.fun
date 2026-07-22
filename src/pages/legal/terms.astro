@@ -1,0 +1,79 @@
+---
+import Base from '../../layouts/Base.astro';
+
+// DRAFT — owner approves before publish (A8 owner prerequisites).
+// The copyright section is written to match the product's actual position
+// (CLAUDE.md §3.2): chord progressions and strumming patterns aren't
+// copyrightable, the player authors the recipe, and we ship no song content.
+const updated = 'July 2026';
+const contact = 'support@rosetta.fun';
+---
+
+<Base title="Terms · Rosetta" description="The terms for using Rosetta.">
+  <h1>Terms of use</h1>
+  <p class="faint">Last updated: {updated}</p>
+
+  <p>These terms cover the Rosetta app and this website. Using either means you agree to them.</p>
+
+  <h2>Your account</h2>
+  <p>
+    You need an account to use Mo. Keep your sign-in details to yourself — you're responsible for what happens
+    under your account. One person, one account. You must be 13 or older.
+  </p>
+
+  <h2>What you can make</h2>
+  <p>
+    Rosetta lets you build songs from chord progressions and strumming patterns. Those are musical building
+    blocks, not recordings, and Rosetta ships no copyrighted music. What you create is yours to play, keep and
+    share.
+  </p>
+  <p>
+    <strong>Respect other people's music.</strong> If you're recreating a song you love, that's for your own
+    practice and enjoyment. Don't pass off someone else's composition as your own, and don't upload lyrics or
+    recordings you don't have the rights to.
+  </p>
+
+  <h2>Mo, and what it produces</h2>
+  <p>
+    Mo is an AI. It gets things wrong, and two people asking for the same thing may get different results. We
+    don't promise a particular song, quality level or turnaround, and we don't claim any ownership of what Mo
+    makes for you.
+  </p>
+
+  <h2>Fair use of the service</h2>
+  <p>
+    There are limits on how many songs you can make — a monthly allowance and a daily cap that exists to stop
+    abuse. Don't try to get around them, don't use automated tools against our servers, and don't use Rosetta
+    to generate anything unlawful or hateful. We can suspend or delete accounts that do.
+  </p>
+
+  <h2>Paying</h2>
+  <p>
+    Some things cost money. Prices are shown before you buy. Purchases on this website are handled by Stripe;
+    purchases in the app are handled by Apple. Subscriptions renew until you cancel — cancel any time from
+    your account page (web) or from your Apple subscription settings (app). See <a href="/legal/refunds">refunds</a>.
+  </p>
+  <p>
+    Credits and allowances have no cash value, can't be transferred, and are lost if you delete your account.
+  </p>
+
+  <h2>Ending things</h2>
+  <p>
+    You can stop using Rosetta and delete your account whenever you like. We may suspend or end an account
+    that breaks these terms, or discontinue the service — if we shut it down, we'll give reasonable notice and
+    refund any unused paid time.
+  </p>
+
+  <h2>No warranty, and limits on liability</h2>
+  <p>
+    Rosetta is provided "as is". We don't guarantee it will be uninterrupted or error-free. To the extent the
+    law allows, our total liability to you is limited to what you paid us in the twelve months before the
+    claim. Nothing here limits liability that can't legally be limited.
+  </p>
+
+  <h2>Changes</h2>
+  <p>We may update these terms. If a change is significant, we'll tell you before it takes effect.</p>
+
+  <h2>Contact</h2>
+  <p><a href={`mailto:${contact}`}>{contact}</a></p>
+</Base>

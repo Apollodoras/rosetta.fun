@@ -1,0 +1,203 @@
+---
+import Base from '../layouts/Base.astro';
+import { ALLOWANCE, loadConfig, plusPrice } from '../lib/config';
+
+// The plan chooser (HANDOFF W2). Two tiers, and every number on the page comes
+// from somewhere real: the allowances from `ALLOWANCE` (mirrored from the
+// backend's entitlement module) and the price from the Stripe catalog. Nothing
+// is typed inline — a page that invents a number is a page that lies the day
+// the backend changes.
+//
+// Four states, all rendered from this one markup by `membership-page.ts`:
+// signed-out/no catalog · signed-out/priced · signed-in free · signed-in Plus.
+// The static HTML is the signed-out shape, so it is also what someone with
+// JavaScript disabled sees: true, just not personalized.
+const config = loadConfig();
+const configured = config.missing.length === 0;
+const plus = plusPrice(config.prices);
+---
+
+<Base title="Membership · Rosetta" description="Rosetta Free and Rosetta Plus — what each one includes.">
+  <h1>Membership</h1>
+  <p class="muted">
+    Rosetta is free to play. Making songs with Mo costs real money to run, so every account gets a monthly
+    allowance and Plus raises it.
+  </p>
+
+  {
+    !configured && (
+      <div class="card card--danger">
+        <h2>Not configured</h2>
+        <p>
+          This build is missing its Firebase / backend configuration, so the plan buttons are switched off
+          rather than shown as buttons that quietly do nothing.
+        </p>
+        <p class="faint">
+          Missing: <code>{config.missing.join(', ')}</code>. Copy <code>.env.example</code> to <code>.env</code>{' '}
+          and rebuild.
+        </p>
+      </div>
+    )
+  }
+
+  <div class="plans">
+    {/* ---- Free ------------------------------------------------------- */}
+    <div class="card plan">
+      <div class="plan-head">
+        <h2>Free</h2>
+        <span class="badge" id="free-current" hidden>Your plan</span>
+      </div>
+      <p class="plan-price">£0</p>
+      <ul class="plan-points">
+        <li><strong>{ALLOWANCE.free} songs</strong> with Mo each month</li>
+        <li>Renews monthly — unused songs don't roll over</li>
+        <li>Everything else in the app, with no limit</li>
+      </ul>
+      <p class="faint" id="free-note">This is what you get without paying anything, forever.</p>
+    </div>
+
+    {/* ---- Plus ------------------------------------------------------- */}
+    <div class="card plan plan--featured">
+      <div class="plan-head">
+        <h2>Rosetta Plus</h2>
+        <span class="badge" id="plus-current" hidden>Your plan</span>
+      </div>
+
+      {/* No price element at all when the catalog is empty — an empty slot
+          reads as a loading bug, and "£—" reads as a number we withheld. */}
+      {plus?.price && <p class="plan-price">{plus.price}</p>}
+
+      <ul class="plan-points">
+        <li><strong>{ALLOWANCE.plus} songs</strong> with Mo each month</li>
+        <li>Renews monthly — unused songs don't roll over</li>
+        <li>Cancel whenever you like; you keep the month you paid for</li>
+      </ul>
+
+      <div id="plus-actions">
+        {
+          plus ? (
+            <>
+              {/* Signed out: the choice needs an account, so it hands off to
+                  /account and comes back here (the ?next= contract, W3). */}
+              <div class="button-row" id="plus-signin">
+                <a class="button button--primary" href="/account?next=/membership">
+                  Sign in to choose
+                </a>
+              </div>
+
+              <div class="button-row" id="plus-checkout-row" hidden>
+                <button type="button" class="primary" id="plus-checkout" data-price={plus.id}>
+                  Choose Plus
+                </button>
+              </div>
+            </>
+          ) : (
+            <p class="muted" id="plus-soon">
+              Memberships aren't open yet. We're still measuring what a song actually costs to make before we
+              put a price on it — we'd rather say nothing than say something we have to take back.
+            </p>
+          )
+        }
+
+        {/* Reachable in every catalog state: someone can be on Plus (or have
+            past invoices) while the web catalog is closed. Stripe's portal owns
+            cancelling, resuming, cards and invoices — we deliberately ship no
+            cancel button of our own. */}
+        <div class="button-row" id="plus-portal-row" hidden>
+          <button type="button" id="plus-portal">Manage membership</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="membership-message" class="notice" hidden></div>
+
+  <p class="faint">
+    Subscribed in the app instead? Apple manages those subscriptions and their refunds — see{' '}
+    <a href="/legal/refunds">refunds</a>.
+  </p>
+</Base>
+
+<style>
+  .plans {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    margin: 1.5rem 0;
+    align-items: start;
+  }
+
+  .plan {
+    margin: 0;
+    height: 100%;
+  }
+
+  .plan--featured {
+    border-color: rgba(255, 184, 77, 0.4);
+  }
+
+  .plan-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .plan-head h2 {
+    margin: 0;
+  }
+
+  .badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--deep);
+    background: var(--amber);
+    border-radius: 999px;
+    padding: 0.2rem 0.6rem;
+    white-space: nowrap;
+  }
+
+  .plan-price {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--amber);
+    line-height: 1.1;
+    margin: 0.75rem 0 0;
+  }
+
+  .plan-points {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 0;
+  }
+
+  .plan-points li {
+    padding: 0.35rem 0 0.35rem 1.4rem;
+    position: relative;
+    color: var(--text-dim);
+    font-size: 0.95rem;
+  }
+
+  .plan-points li::before {
+    content: '';
+    position: absolute;
+    left: 0.25rem;
+    top: 1.05em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--amber);
+  }
+
+  .plan-points strong {
+    color: var(--text);
+  }
+</style>
+
+<script>
+  import { start } from '../lib/membership-page';
+  start();
+</script>

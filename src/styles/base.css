@@ -1,0 +1,303 @@
+@import './tokens.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--deep);
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--deep);
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.5em;
+}
+
+h1 {
+  font-size: clamp(2rem, 5vw, 2.75rem);
+}
+h2 {
+  font-size: 1.4rem;
+  margin-top: 2rem;
+}
+h3 {
+  font-size: 1.1rem;
+  margin-top: 1.5rem;
+}
+
+p,
+li {
+  max-width: var(--measure);
+}
+
+a {
+  color: var(--amber);
+  text-underline-offset: 3px;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+main {
+  flex: 1;
+  width: 100%;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 4rem;
+}
+
+/* --- Chrome ------------------------------------------------------------- */
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--glass);
+  max-width: 880px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.site-nav a {
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.site-nav a:hover,
+.site-nav a[aria-current='page'] {
+  color: var(--text);
+}
+
+.wordmark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--text) !important;
+  margin-right: auto;
+  font-size: 1.05rem;
+}
+
+.wordmark span {
+  color: var(--amber);
+}
+
+.site-footer {
+  border-top: 1px solid var(--glass);
+  padding: 1.5rem 1.25rem 2.5rem;
+  color: var(--text-faint);
+  font-size: 0.85rem;
+}
+
+.site-footer nav {
+  max-width: 880px;
+  margin: 0 auto;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.site-footer a {
+  color: var(--text-faint);
+}
+
+/* --- Cards / liquid glass (CLAUDE.md §17 — chrome only) ------------------ */
+
+.card {
+  background: var(--glass);
+  border: 1px solid var(--glass);
+  border-radius: var(--radius-card);
+  padding: 1.25rem 1.4rem;
+  margin: 1rem 0;
+  backdrop-filter: blur(12px);
+}
+
+.card h2,
+.card h3 {
+  margin-top: 0;
+}
+
+.card--danger {
+  border-color: rgba(255, 107, 107, 0.35);
+}
+
+.muted {
+  color: var(--text-dim);
+}
+
+.faint {
+  color: var(--text-faint);
+  font-size: 0.9rem;
+}
+
+/* --- Buttons ------------------------------------------------------------ */
+
+button,
+.button {
+  font: inherit;
+  font-weight: 500;
+  border-radius: var(--radius-tight);
+  border: 1px solid var(--glass-strong);
+  background: var(--glass);
+  color: var(--text);
+  padding: 0.65rem 1.1rem;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+button:hover:not(:disabled),
+.button:hover {
+  background: var(--glass-strong);
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.button--primary,
+button.primary {
+  background: var(--amber);
+  border-color: var(--amber);
+  color: var(--deep);
+  font-weight: 600;
+}
+
+.button--primary:hover,
+button.primary:hover:not(:disabled) {
+  background: #ffc76d;
+}
+
+button.danger {
+  border-color: rgba(255, 107, 107, 0.5);
+  color: var(--danger);
+}
+
+button.danger:hover:not(:disabled) {
+  background: rgba(255, 107, 107, 0.12);
+}
+
+.button-row {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-top: 0.75rem;
+}
+
+/* --- Forms -------------------------------------------------------------- */
+
+label {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  margin-bottom: 0.3rem;
+}
+
+input {
+  font: inherit;
+  width: 100%;
+  max-width: 340px;
+  padding: 0.6rem 0.75rem;
+  border-radius: var(--radius-tight);
+  border: 1px solid var(--glass-strong);
+  background: rgba(0, 0, 0, 0.25);
+  color: var(--text);
+}
+
+.field {
+  margin-bottom: 0.85rem;
+}
+
+/* --- Status messages ---------------------------------------------------- */
+
+.notice {
+  border-radius: var(--radius-tight);
+  padding: 0.75rem 1rem;
+  margin: 0.75rem 0;
+  border: 1px solid var(--glass-strong);
+  font-size: 0.95rem;
+}
+
+.notice--error {
+  border-color: rgba(255, 107, 107, 0.5);
+  background: rgba(255, 107, 107, 0.1);
+}
+
+.notice--ok {
+  border-color: rgba(91, 224, 160, 0.45);
+  background: rgba(91, 224, 160, 0.1);
+}
+
+.notice--warn {
+  border-color: rgba(255, 184, 77, 0.5);
+  background: rgba(255, 184, 77, 0.1);
+}
+
+/* --- Account readouts --------------------------------------------------- */
+
+.balance {
+  font-family: var(--font-display);
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--amber);
+  line-height: 1;
+}
+
+.rows {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
+}
+
+.rows li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  border-top: 1px solid var(--glass);
+  font-size: 0.95rem;
+}
+
+.rows li span:first-child {
+  color: var(--text-dim);
+}
+
+[hidden] {
+  display: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

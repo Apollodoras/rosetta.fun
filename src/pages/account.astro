@@ -1,0 +1,174 @@
+---
+import Base from '../layouts/Base.astro';
+import { loadConfig, METHOD_LABELS } from '../lib/config';
+
+const config = loadConfig();
+const configured = config.missing.length === 0;
+const federated = config.methods.filter((m) => m !== 'password');
+const hasPassword = config.methods.includes('password');
+---
+
+<Base title="Your account · Rosetta" description="Manage your Rosetta account, songs, and billing." noindex>
+  <h1>Your account</h1>
+
+  {
+    !configured && (
+      <div class="card card--danger">
+        <h2>Not configured</h2>
+        <p>
+          This build is missing its Firebase / backend configuration, so sign-in is switched off rather than
+          shown as a button that quietly does nothing.
+        </p>
+        <p class="faint">
+          Missing: <code>{config.missing.join('</code>, <code>')}</code>. Copy <code>.env.example</code> to{' '}
+          <code>.env</code> and rebuild.
+        </p>
+      </div>
+    )
+  }
+
+  {
+    configured && (
+      <>
+        {/* ---- Loading ------------------------------------------------- */}
+        <div id="loading" class="card">
+          <p class="muted">Checking your sign-in…</p>
+        </div>
+
+        {/* ---- Signed out ---------------------------------------------- */}
+        <section id="signed-out" hidden>
+          <div class="card">
+            <h2>Sign in</h2>
+            <p class="muted">
+              The same account you use in the Rosetta app. Your songs, balance, and plan follow you between
+              them.
+            </p>
+
+            <div class="button-row">
+              {federated.map((method) => (
+                <button type="button" data-provider={method}>
+                  {METHOD_LABELS[method]}
+                </button>
+              ))}
+            </div>
+
+            {hasPassword && (
+              <form id="password-form" novalidate>
+                <hr style="border:none;border-top:1px solid var(--glass);margin:1.5rem 0" />
+                <div class="field">
+                  <label for="email">Email</label>
+                  <input id="email" name="email" type="email" autocomplete="email" required />
+                </div>
+                <div class="field">
+                  <label for="password">Password</label>
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    autocomplete="current-password"
+                    required
+                  />
+                </div>
+                <div class="button-row">
+                  <button type="submit" class="primary" data-action="sign-in">Sign in</button>
+                  <button type="button" data-action="sign-up">Create account</button>
+                  <button type="button" data-action="reset">Forgot password</button>
+                </div>
+              </form>
+            )}
+
+            <div id="auth-message" class="notice" hidden></div>
+          </div>
+        </section>
+
+        {/* ---- Signed in ----------------------------------------------- */}
+        <section id="signed-in" hidden>
+          <div class="card">
+            <h2 id="account-name">Your account</h2>
+            <p class="faint" id="account-email"></p>
+            <div class="button-row">
+              <button type="button" id="sign-out">Sign out</button>
+            </div>
+          </div>
+
+          <div id="verify-banner" class="notice notice--warn" hidden>
+            <p style="margin:0 0 .5rem">
+              Confirm your email to make songs with Mo. We sent a link to <strong id="verify-email"></strong>.
+            </p>
+            <div class="button-row" style="margin-top:0">
+              <button type="button" id="resend-verification">Resend email</button>
+              <button type="button" id="recheck-verification">I've confirmed</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Songs</h3>
+            <p class="balance" id="balance">—</p>
+            <p class="muted" id="balance-detail"></p>
+            <ul class="rows">
+              <li id="daily-row" hidden><span>Daily limit</span><span id="daily-value">—</span></li>
+            </ul>
+          </div>
+
+          {/* Membership is its own page — this is the summary and the way there.
+              The plan row keeps `#plan-value` so it is still filled by the same
+              line of `render()` that filled it when it sat under Songs.
+
+              Credit packs are out of scope (HANDOFF §1): no route on this site
+              sells one. `account-page.ts` keeps its `[data-price]` handler,
+              which now binds to nothing — dormant, so re-enabling packs later
+              is a markup change and not a rewrite. */}
+          <div class="card">
+            <h3>Membership</h3>
+            <ul class="rows">
+              <li><span>Your plan</span><span id="plan-value">—</span></li>
+            </ul>
+            <div class="button-row">
+              <a class="button" href="/membership">Change membership</a>
+              <button type="button" id="portal">Manage billing</button>
+            </div>
+            <p class="faint">
+              Subscribed in the app instead? Apple manages those subscriptions and their refunds — see{' '}
+              <a href="/legal/refunds">refunds</a>.
+            </p>
+          </div>
+
+          <div class="card card--danger">
+            <h3>Delete your account</h3>
+            <p class="muted">
+              This erases your Rosetta account and everything the server holds for it: your sign-in, your song
+              history, your balance, and any remaining credits.
+            </p>
+            <p class="faint">
+              Songs you've saved on your device stay on your device. Deleting is permanent — credits and plan
+              time are not refunded, and we can't restore the account afterwards.
+            </p>
+
+            <div id="delete-password-field" class="field" hidden style="margin-top:1rem">
+              <label for="delete-password">Confirm your password</label>
+              <input id="delete-password" type="password" autocomplete="current-password" />
+            </div>
+            <p id="delete-reauth-note" class="faint" hidden>
+              You'll be asked to confirm with your sign-in provider before this goes through.
+            </p>
+
+            <div class="button-row">
+              <button type="button" class="danger" id="delete-start">Delete account</button>
+            </div>
+            <div class="button-row" id="delete-confirm-row" hidden>
+              <button type="button" class="danger" id="delete-confirm">Yes — delete permanently</button>
+              <button type="button" id="delete-cancel">Cancel</button>
+            </div>
+          </div>
+
+          <div id="account-message" class="notice" hidden></div>
+        </section>
+      </>
+    )
+  }
+</Base>
+
+<script>
+  import { start } from '../lib/account-page';
+  start();
+</script>

@@ -1,0 +1,26 @@
+---
+// The landing shell — deliberately almost nothing (HANDOFF W1).
+//
+// This site's entire job is accounts and membership. It says nothing about the
+// app, the hardware, Mo, or what any of them can do: a claim we have not
+// shipped is a claim we would have to take back, and half a marketing page is
+// worse than none.
+//
+// THE MARKETING HOME IS NOT LOST. It lives, complete and unrouted, in
+// `src/home-body.html` — the "SKIN · GLASS · MIND · WOOD" page from
+// ROSETTA_FUN.md §3.1, a self-contained fragment carrying its own style and
+// script. Restoring it is a document shell around
+// `import body from '../home-body.html?raw'`, which is exactly what this file
+// used to be. Do not "fix" the missing home page by writing a new one.
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Rosetta" description="Sign in to your Rosetta account and manage your membership.">
+  <h1>Rosetta accounts</h1>
+  <p class="muted">Sign in to manage your membership.</p>
+
+  <div class="button-row">
+    <a class="button button--primary" href="/account">Sign in</a>
+    <a class="button" href="/membership">Membership</a>
+  </div>
+</Base>

@@ -1,0 +1,110 @@
+---
+import Base from '../../layouts/Base.astro';
+
+// DRAFT — the owner approves legal wording before this publishes
+// (ROSETTA_ACCOUNTS.md A8 owner prerequisites). Every processor named below was
+// read out of the actual code, not assumed: Firebase Auth (app + site),
+// Anthropic (`MO_MODEL` in mo-backend/app/config.py), Stripe (app/billing/),
+// Modal (modal_app.py), Apple (IAP, A7). If a processor is added, this list is
+// part of shipping it.
+const updated = 'July 2026';
+const contact = 'support@rosetta.fun';
+---
+
+<Base title="Privacy · Rosetta" description="What Rosetta collects, why, and who else sees it.">
+  <h1>Privacy</h1>
+  <p class="faint">Last updated: {updated}</p>
+
+  <p>
+    Rosetta is a guitar app. It needs very little about you, and this page is the complete list of what it
+    does need. We don't sell your data, we don't run ads, and we don't track you across other websites.
+  </p>
+
+  <h2>What we collect</h2>
+  <ul>
+    <li>
+      <strong>Your account.</strong> An email address, and a user ID we generate. If you sign in with Apple,
+      Google, X or Facebook, we receive whatever that provider tells us — typically an email address and a
+      display name. If you use Sign in with Apple's private relay, we only ever see the relay address.
+    </li>
+    <li>
+      <strong>What you ask Mo for.</strong> The descriptions you type when you ask Mo to make a song, and the
+      songs it makes back. We keep these to run the feature, to stop abuse, and to see where Mo gets it wrong.
+    </li>
+    <li>
+      <strong>Usage counts.</strong> How many songs you've made, your remaining allowance and credits, and
+      timestamps for them. This is how allowances and purchases work at all.
+    </li>
+    <li>
+      <strong>Purchases.</strong> If you buy something, we store which purchase it was and a transaction ID
+      from Stripe or Apple. <strong>We never see or store your card details.</strong>
+    </li>
+  </ul>
+
+  <p>
+    <strong>What we don't collect:</strong> no contacts, no location, no microphone recordings, no advertising
+    identifiers, and no analytics that follow you to other sites. The songs you write yourself in the app stay
+    on your device unless you choose to share them.
+  </p>
+
+  <h2>Who else processes it</h2>
+  <p>We use a small number of companies to run the service. They only handle your data to do that job.</p>
+  <ul>
+    <li><strong>Google (Firebase Authentication)</strong> — sign-in and account identity.</li>
+    <li><strong>Anthropic</strong> — the AI model behind Mo. Your song description is sent there to generate a song.</li>
+    <li><strong>Modal</strong> — hosting for our servers and database.</li>
+    <li><strong>Stripe</strong> — payments made on this website, including card handling.</li>
+    <li><strong>Apple</strong> — purchases made inside the iOS app, and Sign in with Apple.</li>
+  </ul>
+
+  <h2>Where your data goes</h2>
+  <p>
+    These providers are based in the United States, and your information is stored and processed there. If you
+    are in the UK, EU or another region with data-transfer rules, using Rosetta means your data is transferred
+    to the United States under the relevant standard contractual clauses or equivalent safeguards our
+    providers maintain.
+  </p>
+
+  <h2>Why we're allowed to hold it</h2>
+  <p>
+    We process your account and usage data to provide the service you asked for (contract), and a minimum
+    amount to keep the service from being abused (legitimate interests). We keep purchase records as long as
+    tax and accounting rules require.
+  </p>
+
+  <h2>Deleting your account</h2>
+  <p>
+    You can delete your account at any time — in the app under Profile, or on <a href="/account">this website</a>.
+    Deleting removes your sign-in, your usage history, your balance and any remaining credits from our
+    servers. It is permanent and we can't restore it. Backups roll off within 30 days. Records we're legally
+    required to keep for accounting purposes are retained for that purpose only.
+  </p>
+
+  <h2>Your rights</h2>
+  <p>
+    You can ask for a copy of your data, ask us to correct it, or ask us to delete it. Deletion is
+    self-service (above); for anything else, email <a href={`mailto:${contact}`}>{contact}</a> and we'll
+    respond within 30 days.
+  </p>
+
+  <h2>Children</h2>
+  <p>
+    Rosetta isn't directed at children under 13, and we don't knowingly collect their data. If you believe a
+    child has created an account, email us and we'll delete it.
+  </p>
+
+  <h2>Cookies</h2>
+  <p>
+    This website sets no advertising or analytics cookies. Signing in stores your session in your browser so
+    you stay signed in — that's it.
+  </p>
+
+  <h2>Changes</h2>
+  <p>
+    If we change this policy in a way that matters, we'll say so in the app and on this page before it takes
+    effect.
+  </p>
+
+  <h2>Contact</h2>
+  <p><a href={`mailto:${contact}`}>{contact}</a></p>
+</Base>

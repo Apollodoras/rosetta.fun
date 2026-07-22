@@ -1,0 +1,62 @@
+---
+import '../styles/base.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Legal/marketing pages are indexable; /account is not. */
+  noindex?: boolean;
+}
+
+const { title, description = 'Rosetta — play the songs you love on a real guitar.', noindex = false } = Astro.props;
+const path = Astro.url.pathname.replace(/\.html$/, '');
+
+// One header, and it goes exactly two places (W4). Nothing out of scope gets a
+// nav entry, because there is nothing else on this site: no app page, no
+// hardware, no Mo, no support. Legal lives in the footer where Stripe and App
+// Store review expect to find it.
+const nav = [
+  { href: '/membership', label: 'Membership' },
+  { href: '/account', label: 'Account' },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0D0F14" />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <header>
+      <nav class="site-nav">
+        <a class="wordmark" href="/">rosetta<span>.fun</span></a>
+        {
+          nav.map((item) => (
+            <a href={item.href} aria-current={path.startsWith(item.href) ? 'page' : undefined}>
+              {item.label}
+            </a>
+          ))
+        }
+      </nav>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <nav>
+        <span>© {new Date().getFullYear()} Rosetta</span>
+        <a href="/legal/terms">Terms</a>
+        <a href="/legal/privacy">Privacy</a>
+        <a href="/legal/refunds">Refunds</a>
+      </nav>
+    </footer>
+  </body>
+</html>
